@@ -1,105 +1,40 @@
 import { useState } from "react";
 import axios from "axios";
 
-const API_BASE_URL = "https://movie-management-system-production-3733.up.railway.app";
+const API_BASE_URL = "https://algolia-search-backend-production.up.railway.app";
 
 const apis = [
-    {
-      name: "Register User",
-      method: "POST",
-      endpoint: "/register",
-      description: "Registers a new user with username, email, password, and role.",
-      payload: {
-        username: "testuser",
-        email: "testuser@example.com",
-        password: "password123",
-        role: "USER",
-      },
-    },
-    {
-      name: "Login User",
-      method: "POST",
-      endpoint: "/login",
-      description: "Logs in a user and returns a JWT token.",
-      payload: {
-        email: "user@example.com",
-        password: "User@123",
-      },
-    },
-    {
-      name: "Get All Movies",
-      method: "GET",
-      endpoint: "/movies",
-      description: "Retrieves a list of all movies with their details and ratings.",
-    },
-    {
-      name: "Create Movie",
-      method: "POST",
-      endpoint: "/movies",
-      description: "Creates a new movie. Only authenticated users can perform this action.",
-      payload: {
-        title: "Inception",
-        description: "A mind-bending thriller",
-        releasedAt: "2010-07-16",
-        duration: 148,
-        genre: "Sci-Fi",
-        language: "English",
-      },
-    },
-    {
-      name: "Update Movie",
-      method: "PUT",
-      endpoint: "/movies/:id",
-      description: "Updates the details of a specific movie. Only the creator can perform this action.",
-      payload: {
-        title: "Updated Movie Title",
-        description: "Updated description",
-        releasedAt: "2022-01-01",
-        duration: 150,
-        genre: "Drama",
-        language: "English",
-      },
-    },
-    {
-      name: "Rate Movie",
-      method: "POST",
-      endpoint: "/movies/:id/rate",
-      description: "Rates a specific movie. Ratings range from 1 to 5.",
-      payload: {
-        score: 4,
-      },
-    },
-    {
-      name: "Report Movie",
-      method: "POST",
-      endpoint: "/movies/:id/report",
-      description: "Reports a specific movie. Only authenticated users can perform this action.",
-      payload: {
-        reason: "Inappropriate content",
-      },
-    },
-    {
-      name: "Get All Reports (Admin Only)",
-      method: "GET",
-      endpoint: "/admin/reports",
-      description: "Retrieves all movie reports. Only accessible by admins.",
-    },
-    {
-      name: "Resolve Report (Admin Only)",
-      method: "POST",
-      endpoint: "/admin/reports/:id/resolve",
-      description: "Approves or rejects a movie report. Only accessible by admins.",
-      payload: {
-        action: "approve", // or "reject"
-      },
-    },
-    {
-      name: "Test Endpoint",
-      method: "GET",
-      endpoint: "/test",
-      description: "A simple test endpoint to verify API connectivity.",
-    },
-  ];
+  {
+    "name": "Search Products",
+    "method": "GET",
+    "endpoint": "/api/search?query=calvin",
+    "description": "Search for products in the Algolia index based on a query parameter.",
+    "payload": {
+      "query": "Product name or keyword"
+    }
+  },
+  {
+    "name": "Add Product",
+    "method": "POST",
+    "endpoint": "/api/add",
+    "description": "Adds a new product to the Algolia index.",
+    "payload": {
+      "objectID": "123",
+      "name": "Sample Product",
+      "description": "Product description",
+      "price": 100.00,
+      "category": "Electronics"
+    }
+  },
+  {
+    "name": "Test API",
+    "method": "GET",
+    "endpoint": "/api/test",
+    "description": "Test API to check if the server is running properly.",
+    "payload": {}
+  }
+]
+
   
 
 
@@ -151,8 +86,10 @@ const apis = [
         <h1 className="text-3xl font-bold text-gray-800 mb-6">API Testing Tool</h1>
   
         <div className="bg-white p-6 rounded shadow-md border border-gray-200 mb-6">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">Authorization</h2>
-          <div className="flex gap-4">
+          <div className="flex items-center mb-2">
+          <h2 className="text-xl font-semibold text-gray-700 ">Authorization</h2><span>(Not required)</span> 
+          </div>
+          <div className="flex gap-4 item">
             <button
               onClick={() => handleGetToken("user2@example.com", "User2@123")}
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-4"
